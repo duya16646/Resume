@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>耿钦泽 · 个人介绍</title>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ---------- 全局重置 ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a12;
+            color: #e2e2f0;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ---------- 星空背景 (Canvas) ---------- */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(ellipse at bottom, #0a0a1a 0%, #000000 100%);
+        }
+
+        /* ---------- 导航栏 ---------- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(10, 10, 18, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #7c3aed;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            position: relative;
+            padding-bottom: 4px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: #7c3aed;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: #a78bfa;
+        }
+
+        /* ---------- Hero 区域 ---------- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 750px;
+        }
+
+        .avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.4);
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .hero h1 .highlight {
+            color: #7c3aed;
+        }
+
+        .hero .subhead {
+            font-size: 1.3rem;
+            color: #c4b5fd;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .typing {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #c4b5fd;
+            min-height: 3rem;
+            border-right: 3px solid #7c3aed;
+            display: inline-block;
+            padding-right: 6px;
+            animation: blink 0.8s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        .hero .bio {
+            margin-top: 1.5rem;
+            font-size: 1.05rem;
+            color: #b0b0c8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero .info-line {
+            margin-top: 0.8rem;
+            font-size: 1rem;
+            color: #8a8aaa;
+        }
+        .hero .info-line i {
+            color: #7c3aed;
+            margin-right: 6px;
+        }
+
+        .social-links {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            font-size: 1.8rem;
+            color: #b0b0c8;
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #7c3aed;
+            transform: translateY(-4px);
+        }
+
+        /* ---------- 下载简历按钮 ---------- */
+        .download-btn-wrapper {
+            margin-top: 2rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: #7c3aed;
+            color: #fff;
+            padding: 0.9rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+            text-decoration: none;
+        }
+
+        .download-btn i {
+            margin-right: 10px;
+        }
+
+        .download-btn:hover {
+            background: #6d28d9;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5);
+        }
+
+        /* ---------- 通用section ---------- */
+        section {
+            padding: 5rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            letter-spacing: -0.5px;
+        }
+
+        .section-title span {
+            color: #7c3aed;
+        }
+
+        /* ---------- 技能 ---------- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 1.5rem;
+            justify-items: center;
+        }
+
+        .skill-item {
+            background: rgba(30, 30, 50, 0.8);
+            backdrop-filter: blur(4px);
+            padding: 1rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #d4d4ee;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .skill-item:hover {
+            background: #7c3aed;
+            color: #fff;
+            transform: scale(1.05);
+            border-color: #7c3aed;
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        /* ---------- 工作经历 ---------- */
+        .exp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .exp-card {
+            background: rgba(26, 26, 46, 0.85);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(124, 58, 237, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .exp-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.4);
+            border-color: #7c3aed;
+        }
+
+        .exp-card h3 {
+            font-size: 1.4rem;
+            color: #e2e2f0;
+        }
+
+        .exp-card .company {
+            color: #a78bfa;
+            font-weight: 600;
+            margin: 0.2rem 0 0.5rem;
+        }
+
+        .exp-card .date {
+            font-size: 0.85rem;
+            color: #7a7a96;
+            margin-bottom: 0.8rem;
+        }
+
+        .exp-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .exp-card ul li {
+            padding-left: 1.2rem;
+            position: relative;
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            color: #c8c8e0;
+        }
+
+        .exp-card ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #7c3aed;
+        }
+
+        /* ---------- 项目 ---------- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(26, 26, 46, 0.85);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            padding: 2rem 1.8rem;
+            border: 1px solid rgba(124, 58, 237, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border-color: #7c3aed;
+        }
+
+        .project-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+            color: #e2e2f0;
+        }
+
+        .project-card .role {
+            color: #a78bfa;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .project-card .tech-tag {
+            display: inline-block;
+            background: #2d2d4a;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #a78bfa;
+            margin: 0.4rem 0.4rem 0 0;
+        }
+
+        .project-card p {
+            margin: 0.8rem 0 1.2rem;
+            color: #b0b0c8;
+        }
+
+        .project-card .project-link {
+            color: #7c3aed;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .project-card .project-link:hover {
+            color: #a78bfa;
+        }
+
+        /* ---------- 联系 ---------- */
+        .contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            text-align: center;
+        }
+
+        .contact-item {
+            background: rgba(26, 26, 46, 0.85);
+            backdrop-filter: blur(4px);
+            padding: 1.8rem 2.2rem;
+            border-radius: 20px;
+            min-width: 180px;
+            border: 1px solid rgba(124, 58, 237, 0.15);
+            transition: border-color 0.3s;
+        }
+
+        .contact-item:hover {
+            border-color: #7c3aed;
+        }
+
+        .contact-item i {
+            font-size: 2.2rem;
+            color: #7c3aed;
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-item .label {
+            font-weight: 500;
+            color: #aaaac8;
+        }
+
+        .contact-item a {
+            display: block;
+            margin-top: 0.2rem;
+            font-weight: 500;
+        }
+
+        .contact-item a:hover {
+            color: #a78bfa;
+        }
+
+        /* ---------- 底部 ---------- */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(124, 58, 237, 0.1);
+            color: #7a7a96;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer .visitor-info {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #6a6a88;
+        }
+
+        footer .visitor-info i {
+            color: #7c3aed;
+            margin-right: 4px;
+        }
+
+        /* ---------- 回到顶部按钮 ---------- */
+        #backToTop {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        #backToTop:hover {
+            background: #6d28d9;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.6);
+        }
+
+        /* ---------- 滚动条 ---------- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7c3aed;
+            border-radius: 10px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            .hero h1 { font-size: 2.2rem; }
+            .hero .typing { font-size: 1rem; }
+            .exp-grid, .projects-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== 星空背景 Canvas ====== -->
+    <canvas id="starfield"></canvas>
+
+    <!-- ====== 导航 ====== -->
+    <header>
+        <nav>
+            <div class="logo">👨‍💻 耿钦泽</div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">首页</a></li>
+                <li><a href="#skills">技能</a></li>
+                <li><a href="#experience">工作</a></li>
+                <li><a href="#projects">项目</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ====== Hero ====== -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="avatar">
+                <i class="fas fa-user-astronaut"></i>
+            </div>
+            <h1>你好，我是 <span class="highlight">耿钦泽</span></h1>
+            <div class="subhead">Python 开发 · AI 实践者 · 全栈思维</div>
+            <div class="typing" id="typing-text"></div>
+            <p class="bio">
+                热爱用代码解决实际问题，具备从算法落地到工程化的完整能力。
+                期望在杭州深耕 AI 与后端开发。
+            </p>
+            <div class="info-line">
+                <i class="fas fa-map-marker-alt"></i> 杭州 ·
+                <i class="fas fa-phone-alt"></i> 16646731983
+            </div>
+            <div class="social-links">
+                <a href="mailto:3401861878@qq.com"><i class="fas fa-envelope"></i></a>
+                <a href="https://github.com/duya16646" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://x.com/Y5Tn0xYdkv2554" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+            <div class="download-btn-wrapper">
+                <a href="耿钦泽-厦门工学院.pdf" download class="download-btn">
+                    <i class="fas fa-file-pdf"></i> 下载简历 (PDF)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== 技能 ====== -->
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title">⚡ 技术 <span>能力</span></h2>
+            <div class="skills-grid">
+                <div class="skill-item">Python</div>
+                <div class="skill-item">PyTorch</div>
+                <div class="skill-item">YOLOv8</div>
+                <div class="skill-item">MySQL</div>
+                <div class="skill-item">C++</div>
+                <div class="skill-item">Java</div>
+                <div class="skill-item">PyQt5</div>
+                <div class="skill-item">DeepSeek</div>
+                <div class="skill-item">ClaudeCode</div>
+                <div class="skill-item">Docker</div>
+                <div class="skill-item">Git</div>
+                <div class="skill-item">Linux</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== 工作经历 ====== -->
+    <section id="experience">
+        <div class="container">
+            <h2 class="section-title">💼 工作 <span>经历</span></h2>
+            <div class="exp-grid">
+                <div class="exp-card">
+                    <h3>IT技术支持</h3>
+                    <div class="company">厦门北星博辉科技有限公司</div>
+                    <div class="date">📅 2025.1 – 2025.12</div>
+                    <ul>
+                        <li>负责公司内部网络维护与故障排查，保障网络稳定运行。</li>
+                        <li>IT设备安装、配置与巡检，用户满意度保持 95% 以上。</li>
+                        <li>编写 Python 自动化脚本，将日常重复性任务效率提升约 40%。</li>
+                        <li>独立完成桌面运维，有效降低系统故障率。</li>
+                    </ul>
+                </div>
+                <div class="exp-card">
+                    <h3>Python工程师</h3>
+                    <div class="company">厦门智言慕科技</div>
+                    <div class="date">📅 2025.12 – 2026.4</div>
+                    <ul>
+                        <li>开发与维护 Python 爬虫系统，实现数据采集、清洗与格式转换。</li>
+                        <li>对原始数据进行解析与清洗，确保数据质量满足业务需求。</li>
+                        <li>持续监控爬虫状态，应对网站结构变化，保障数据源长期稳定。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== 项目经历 ====== -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">📁 项目 <span>经历</span></h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>交通标志识别系统</h3>
+                    <div class="role">独立开发者 · 2024.12 – 2025.05</div>
+                    <span class="tech-tag">YOLOv8</span>
+                    <span class="tech-tag">PyTorch</span>
+                    <span class="tech-tag">PyQt5</span>
+                    <p>
+                        基于 YOLOv8 与 PyTorch 训练目标检测模型，在自建数据集上实现高精度识别。
+                        使用 PyQt5 构建图形化界面，集成实时检测与可视化功能。
+                        利用 ClaudeCode 辅助代码审查与测试用例生成，加速迭代。
+                    </p>
+                    <a href="https://github.com/duya16646/-" target="_blank" class="project-link">查看详情 →</a>
+                </div>
+                <div class="project-card">
+                    <h3>通用爬虫采集系统</h3>
+                    <div class="role">Python工程师 · 2025.12 – 2026.1</div>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Scrapy</span>
+                    <span class="tech-tag">正则表达式</span>
+                    <p>
+                        开发并维护多线程爬虫系统，实现动态网页数据采集、清洗与持久化存储；
+                        持续监控并快速适配网站结构变化，保障数据源长期稳定供应。
+                    </p>
+                    <a href="#" class="project-link">查看详情 →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== 联系 ====== -->
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">📬 联系 <span>我</span></h2>
+            <div class="contact-wrapper">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div class="label">邮箱</div>
+                    <a href="mailto:3401861878@qq.com">3401861878@qq.com</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <div class="label">电话</div>
+                    <a href="tel:16646731983">16646731983</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-github"></i>
+                    <div class="label">GitHub</div>
+                    <a href="https://github.com/duya16646" target="_blank">github.com/duya16646</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== 底部 ====== -->
+    <footer>
+        <div class="container">
+            <p>© 2026 耿钦泽 · 用 ❤️ 和 AI 打造 · 期望城市：杭州</p>
+            <div class="visitor-info" id="visitorInfo">
+                <i class="fas fa-map-pin"></i> 正在加载访问者位置...
+            </div>
+        </div>
+    </footer>
+
+    <!-- ====== 回到顶部按钮 ====== -->
+    <button id="backToTop" title="回到顶部">↑</button>
+
+    <!-- ============================================================ -->
+    <!-- ====== JavaScript ====== -->
+    <script>
+        // =============================================
+        // 1. 星空动态背景 (Canvas)
+        // =============================================
+        (function() {
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            let width, height;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            // 星星参数
+            const NUM_STARS = 200;
+            const MAX_SPEED = 0.3;
+
+            class Star {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.size = Math.random() * 1.8 + 0.5;
+                    this.speed = Math.random() * MAX_SPEED + 0.05;
+                    this.opacity = Math.random() * 0.8 + 0.2;
+                    this.twinkleSpeed = Math.random() * 0.02 + 0.005;
+                    this.twinkleOffset = Math.random() * Math.PI * 2;
+                }
+                update() {
+                    this.y += this.speed;
+                    // 闪烁
+                    this.currentOpacity = this.opacity * (0.7 + 0.3 * Math.sin(Date.now() * this.twinkleSpeed + this.twinkleOffset));
+                    if (this.y > height) {
+                        this.reset();
+                        this.y = -2;
+                    }
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${this.currentOpacity})`;
+                    ctx.fill();
+                    // 微弱光晕（大星星）
+                    if (this.size > 1.5) {
+                        ctx.shadowColor = 'rgba(124, 58, 237, 0.15)';
+                        ctx.shadowBlur = 10;
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                    }
+                }
+            }
+
+            for (let i = 0; i < NUM_STARS; i++) {
+                stars.push(new Star());
+            }
+
+            function animateStars() {
+                ctx.clearRect(0, 0, width, height);
+                stars.forEach(star => {
+                    star.update();
+                    star.draw();
+                });
+                requestAnimationFrame(animateStars);
+            }
+            animateStars();
+
+            // 窗口变化时重置星星位置
+            window.addEventListener('resize', () => {
+                stars.forEach(star => star.reset());
+            });
+        })();
+
+
+        // =============================================
+        // 2. 打字机效果
+        // =============================================
+        const phrases = ['Python 开发', 'AI 模型落地', '自动化运维', '全栈思维'];
+        let phraseIndex = 0,
+            charIndex = 0,
+            isDeleting = false;
+        const typingElement = document.getElementById('typing-text');
+
+        function typeEffect() {
+            const current = phrases[phraseIndex];
+            if (isDeleting) {
+                typingElement.textContent = current.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = current.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            let speed = isDeleting ? 40 : 100;
+            if (!isDeleting && charIndex === current.length) { speed = 1500;
+                isDeleting = true; } else if (isDeleting && charIndex === 0) { isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                speed = 300; }
+            setTimeout(typeEffect, speed);
+        }
+        document.addEventListener('DOMContentLoaded', () => typeEffect());
+
+
+        // =============================================
+        // 3. 导航高亮 + 平滑滚动
+        // =============================================
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        function highlightNav() {
+            let current = '';
+            sections.forEach(s => {
+                if (window.scrollY >= s.offsetTop - 100) current = s.id;
+            });
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+            });
+        }
+        window.addEventListener('scroll', highlightNav);
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.getElementById(this.getAttribute('href').substring(1));
+                if (target) window.scrollTo({ top: target.offsetTop - 70, behavior: 'smooth' });
+            });
+        });
+
+
+        // =============================================
+        // 4. 回到顶部按钮
+        // =============================================
+        const backBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+        });
+        backBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+
+        // =============================================
+        // 5. 获取访问者地理位置 (通过 ip-api.com)
+        // =============================================
+        (function() {
+            const visitorEl = document.getElementById('visitorInfo');
+            // 使用 ip-api.com 的 JSONP 方式获取位置
+            const script = document.createElement('script');
+            script.src = 'https://ip-api.com/json/?callback=handleVisitorLocation';
+            document.head.appendChild(script);
+
+            window.handleVisitorLocation = function(data) {
+                if (data && data.status === 'success') {
+                    const flag = data.countryCode ? getFlagEmoji(data.countryCode) : '🌍';
+                    visitorEl.innerHTML = `
+                        <i class="fas fa-map-pin"></i>
+                        当前访问者来自 ${flag} ${data.city || '未知城市'}，${data.regionName || ''}，${data.country || ''}
+                        <span style="color:#4a4a6a;margin-left:8px;">· IP: ${data.query || ''}</span>
+                    `;
+                } else {
+                    visitorEl.innerHTML = `<i class="fas fa-map-pin"></i> 无法获取访问者位置 (API 限制)`;
+                }
+                // 清理全局函数
+                delete window.handleVisitorLocation;
+            };
+
+            // 备用：如果 JSONP 超时
+            setTimeout(() => {
+                if (visitorEl.innerHTML.includes('正在加载')) {
+                    visitorEl.innerHTML = `<i class="fas fa-map-pin"></i> 访问者位置加载超时，请刷新重试`;
+                }
+            }, 8000);
+
+            // 国旗 Emoji 辅助
+            function getFlagEmoji(countryCode) {
+                return String.fromCodePoint(...[...countryCode.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
+            }
+        })();
+    </script>
+
+</body>
+</html>
